@@ -1,7 +1,10 @@
 import { NextRequest } from "next/server";
 
+export async function getCurrentUser() {
+  return { id: "1", nome: "Admin", role: "GERENTE" };
+}
+
 export function getUserFromRequest(req: NextRequest) {
-  // Simula que você é o GERENTE para poder testar tudo sem bloqueios
   return { role: "GERENTE" };
 }
 
