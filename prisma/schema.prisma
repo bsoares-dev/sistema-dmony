@@ -1,0 +1,141 @@
+// ============================================================
+// DMONY MODA ÍNTIMA — Schema do Banco de Dados
+// OCC via campo `version` em EstoquePeriodo
+// Fórmula: EI + P - EA = RV
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------------------------------------
+// CADASTROS BASE
+// ------------------------------------------------------------
+
+model Produto {
+  id         String   @id @default(cuid())
+  nome       String   @unique
+  // "GRUPO_1" | "GRUPO_2" | "GRUPO_3" | "GRUPO_4"
+  // Determina qual grade de tamanhos o produto usa
+  grupoGrade String
+  ativo      Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  estoquePeriodos EstoquePeriodo[]
+
+  @@map("produtos")
+}
+
+model Cor {
+  id        String   @id @default(cuid())
+  nome      String   @unique
+  // Ordem de exibição nas abas da interface
+  ordem     Int      @default(0)
+  ativo     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  estoquePeriodos EstoquePeriodo[]
+
+  @@map("cores")
+}
+
+model Tamanho {
+  id    String  @id @default(cuid())
+  nome  String
+  // "GRUPO_1" | "GRUPO_2" | "GRUPO_3" | "GRUPO_4"
+  grupo String
+  // Ordem de exibição na grade (ex: P=1, M=2, G=3...)
+  ordem Int     @default(0)
+  ativo Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  estoquePeriodos EstoquePeriodo[]
+
+  // Um tamanho "P" no GRUPO_3 é diferente de "P" no GRUPO_4
+  @@unique([nome, grupo])
+  @@map("tamanhos")
+}
+
+// ------------------------------------------------------------
+// PERÍODOS
+// ------------------------------------------------------------
+
+model Periodo {
+  id          String   @id @default(cuid())
+  nome        String
+  // "ABERTO" | "FECHADO"
+  status      String   @default("ABERTO")
+  // Primeiro período: EI é editável manualmente (bootstrap)
+  isBootstrap Boolean  @default(false)
+  // Número sequencial do período (1, 2, 3...)
+  ordem       Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  estoquePeriodos EstoquePeriodo[]
+
+  @@map("periodos")
+}
+
+// ------------------------------------------------------------
+// ENTIDADE PRINCIPAL: ESTOQUE POR PERÍODO
+// Fórmula: EI + P - EA = RV
+// OCC: campo `version` incremental — ver regra em /api/estoque
+// ------------------------------------------------------------
+
+model EstoquePeriodo {
+  id        String @id @default(cuid())
+  periodoId String
+  produtoId String
+  corId     String
+  tamanhoId String
+
+  // EI: Estoque Inicial (herdado do EA do período anterior)
+  //     No período bootstrap, pode ser inserido manualmente
+  ei Decimal @default(0) @db.Decimal(12, 2)
+
+  // P: Produção no período (input obrigatório)
+  p Decimal @default(0) @db.Decimal(12, 2)
+
+  // EA: Estoque Atual / Contagem física (input obrigatório)
+  ea Decimal @default(0) @db.Decimal(12, 2)
+
+  // RV: Resultado de Vendas = EI + P - EA
+  //     Calculado e persistido APENAS no fechamento do período
+  rv Decimal @default(0) @db.Decimal(12, 2)
+
+  // OCC — Optimistic Concurrency Control
+  // Incrementado a cada UPDATE. O cliente deve enviar a versão
+  // que leu; se divergir do banco, retorna HTTP 409 Conflict.
+  version Int @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  periodo Periodo @relation(fields: [periodoId], references: [id])
+  produto Produto @relation(fields: [produtoId], references: [id])
+  cor     Cor     @relation(fields: [corId], references: [id])
+  tamanho Tamanho @relation(fields: [tamanhoId], references: [id])
+
+  // Constraint: combinação única por período
+  @@unique([periodoId, produtoId, corId, tamanhoId])
+
+  // Índices para performance de consultas gerenciais
+  @@index([periodoId])
+  @@index([produtoId])
+  @@index([corId])
+  @@index([periodoId, corId])
+  @@index([periodoId, produtoId])
+
+  @@map("estoque_periodo")
+}
