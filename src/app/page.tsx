@@ -1,11 +1,15 @@
+"use client";
+
+import Navbar from "@/components/Navbar";
 import Dashboard from "@/components/Dashboard";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         <Dashboard userRole="GERENTE" />
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }
