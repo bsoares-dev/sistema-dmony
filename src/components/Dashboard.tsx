@@ -78,19 +78,19 @@ function MetricCard({
   color?: "gray" | "blue" | "green" | "pink" | "amber";
 }) {
   const colors = {
-    gray: "bg-white border-gray-200",
-    blue: "bg-blue-50 border-blue-200",
-    green: "bg-emerald-50 border-emerald-200",
-    pink: "bg-pink-50 border-pink-200",
-    amber: "bg-amber-50 border-amber-200",
+    gray: "bg-white border-gray-300",
+    blue: "bg-blue-50 border-blue-300",
+    green: "bg-emerald-50 border-emerald-300",
+    pink: "bg-pink-50 border-pink-300",
+    amber: "bg-amber-50 border-amber-300",
   };
   return (
-    <div className={`${colors[color]} border rounded-xl p-4`}>
-      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+    <div className={`${colors[color]} border-2 rounded-xl p-4 shadow-sm`}>
+      <p className="text-xs font-bold text-gray-800 uppercase tracking-wide mb-1">
         {label}
       </p>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-      {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
+      <p className="text-2xl font-black text-gray-900">{value}</p>
+      {sub && <p className="text-xs text-gray-700 font-medium mt-0.5">{sub}</p>}
     </div>
   );
 }
@@ -126,7 +126,7 @@ export default function Dashboard({ userRole }: DashboardProps) {
 
   useEffect(() => {
     loadPeriodos();
-  }, []);
+  }, [loadPeriodos]);
 
   useEffect(() => {
     if (!periodoSelecionado) return;
@@ -137,9 +137,9 @@ export default function Dashboard({ userRole }: DashboardProps) {
       .then((r) => r.json())
       .then((data) => {
         if (data.success) setMetrics(data.data);
-        else toast.error(data.error ?? "Erro ao carregar métricas");
+        // Não exibe erro na tela se falhar, apenas deixa as métricas vazias para não sumir com o botão de fechar.
       })
-      .catch(() => toast.error("Erro de rede"))
+      .catch(() => console.error("Erro ao carregar métricas"))
       .finally(() => setLoadingMetrics(false));
   }, [periodoSelecionado]);
 
@@ -164,14 +164,11 @@ export default function Dashboard({ userRole }: DashboardProps) {
         await loadPeriodos();
         setPeriodoSelecionado(data.data.novoPeriodoId);
       } else if (res.status === 422) {
-        toast.error(data.error ?? "Erro de validação", {
-          id: toastId,
-          duration: 8000,
-        });
-      } else if (res.status === 403) {
-        toast.error("Acesso negado. Apenas Gerentes podem encerrar períodos.", {
-          id: toastId,
-        });
+        toast.error(
+          data.error ??
+            "Erro de validação. Certifique-se de preencher algo no estoque.",
+          { id: toastId, duration: 8000 },
+        );
       } else {
         toast.error(data.error ?? "Erro ao encerrar período", { id: toastId });
       }
@@ -215,20 +212,21 @@ export default function Dashboard({ userRole }: DashboardProps) {
     }
   }
 
-  const periodoAtual = metrics?.periodo;
+  // A GRANDE CORREÇÃO: Agora ele lê se tá aberto direto da lista de períodos, sem depender das métricas!
+  const periodoAtual = periodos.find((p) => p.id === periodoSelecionado);
   const isAberto = periodoAtual?.status === "ABERTO";
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
         <div className="flex items-center gap-3">
-          <h1 className="text-xl font-bold text-gray-900">Dashboard</h1>
+          <h1 className="text-2xl font-black text-gray-900">Dashboard</h1>
           {periodoAtual && (
             <span
-              className={`text-xs px-2 py-1 rounded-full font-semibold ${
+              className={`text-sm px-3 py-1 rounded-full font-bold border-2 ${
                 isAberto
-                  ? "bg-green-100 text-green-700"
-                  : "bg-gray-100 text-gray-500"
+                  ? "bg-green-100 text-green-800 border-green-300"
+                  : "bg-gray-100 text-gray-800 border-gray-300"
               }`}
             >
               {isAberto ? "● ABERTO" : "🔒 FECHADO"}
@@ -236,15 +234,15 @@ export default function Dashboard({ userRole }: DashboardProps) {
           )}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-3">
           <select
             value={periodoSelecionado ?? ""}
             onChange={(e) => setPeriodoSelecionado(e.target.value)}
-            className="text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white
-                       focus:outline-none focus:ring-2 focus:ring-pink-400"
+            className="text-base font-bold border-2 border-gray-300 rounded-lg px-4 py-2 text-gray-900 bg-white
+                       focus:outline-none focus:ring-2 focus:ring-pink-500"
           >
             {periodos.map((p) => (
-              <option key={p.id} value={p.id}>
+              <option key={p.id} value={p.id} className="font-bold">
                 {p.nome} {p.status === "ABERTO" ? "▶" : "🔒"}
               </option>
             ))}
@@ -253,7 +251,7 @@ export default function Dashboard({ userRole }: DashboardProps) {
           <button
             onClick={handleExportarCSV}
             disabled={exporting || !periodoSelecionado}
-            className="btn-secondary"
+            className="bg-gray-800 text-white hover:bg-gray-900 font-bold px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
           >
             {exporting ? "⏳ Exportando..." : "⬇ Exportar CSV"}
           </button>
@@ -261,21 +259,21 @@ export default function Dashboard({ userRole }: DashboardProps) {
           {isGerente && isAberto && (
             <>
               {showConfirmClose ? (
-                <div className="flex items-center gap-2 bg-red-50 border border-red-300 rounded-lg px-3 py-2">
-                  <span className="text-sm text-red-700 font-medium">
-                    Confirmar?
+                <div className="flex items-center gap-2 bg-red-100 border-2 border-red-400 rounded-lg px-3 py-1.5 shadow-md">
+                  <span className="text-sm text-red-900 font-bold">
+                    Tem certeza?
                   </span>
                   <button
                     onClick={handleEncerrar}
                     disabled={closing}
-                    className="text-xs bg-red-600 text-white px-3 py-1.5 rounded-md font-semibold
+                    className="text-sm bg-red-600 text-white px-4 py-1.5 rounded-md font-bold
                                hover:bg-red-700 disabled:opacity-50"
                   >
-                    {closing ? "Encerrando..." : "Sim, Encerrar"}
+                    {closing ? "Calculando..." : "Sim, Encerrar"}
                   </button>
                   <button
                     onClick={() => setShowConfirmClose(false)}
-                    className="text-xs text-gray-500 hover:text-gray-700 px-2"
+                    className="text-sm text-gray-700 hover:text-gray-900 px-2 font-bold underline"
                   >
                     Cancelar
                   </button>
@@ -283,9 +281,9 @@ export default function Dashboard({ userRole }: DashboardProps) {
               ) : (
                 <button
                   onClick={() => setShowConfirmClose(true)}
-                  className="btn-danger"
+                  className="bg-red-600 text-white hover:bg-red-700 font-bold px-5 py-2 rounded-lg shadow-md transition-colors border-2 border-red-700"
                 >
-                  🔒 Encerrar Período e Calcular RV
+                  🔒 Encerrar Período
                 </button>
               )}
             </>
@@ -293,20 +291,28 @@ export default function Dashboard({ userRole }: DashboardProps) {
         </div>
       </div>
 
-      {loadingMetrics && (
-        <div className="flex items-center justify-center h-40 text-gray-400">
-          <div className="animate-spin w-6 h-6 border-2 border-pink-400 border-t-transparent rounded-full mr-3" />
+      {loadingMetrics ? (
+        <div className="flex items-center justify-center h-40 text-gray-800 font-bold bg-white rounded-xl border border-gray-200">
+          <div className="animate-spin w-6 h-6 border-4 border-pink-500 border-t-transparent rounded-full mr-3" />
           Carregando métricas...
         </div>
-      )}
-
-      {metrics && !loadingMetrics && (
+      ) : !metrics ? (
+        <div className="p-8 text-center bg-white rounded-xl border border-gray-200 shadow-sm">
+          <p className="text-lg font-bold text-gray-900">
+            Nenhum dado de estoque registrado ainda.
+          </p>
+          <p className="text-gray-600 font-medium mt-1">
+            Vá até a Grade de Estoque, salve algumas contagens e volte aqui para
+            ver os gráficos.
+          </p>
+        </div>
+      ) : (
         <>
           <section>
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+            <h2 className="text-base font-black text-gray-900 uppercase tracking-wide mb-3">
               Resumo Geral
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
               <MetricCard
                 label="Total EI"
                 value={fmt(metrics.resumoGeral.totalEI)}
@@ -344,33 +350,36 @@ export default function Dashboard({ userRole }: DashboardProps) {
 
           <div className="grid lg:grid-cols-2 gap-6">
             <section>
-              <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+              <h2 className="text-base font-black text-gray-900 uppercase tracking-wide mb-3">
                 Top Produtos por RV
               </h2>
-              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+              <div className="bg-white border-2 border-gray-200 rounded-xl overflow-hidden shadow-sm">
                 {metrics.topProdutos.length === 0 ? (
-                  <div className="p-6 text-center text-sm text-gray-400">
+                  <div className="p-6 text-center text-sm font-bold text-gray-500">
                     Nenhum dado disponível
                   </div>
                 ) : (
                   <table className="min-w-full text-sm">
-                    <thead className="bg-gray-50 border-b border-gray-100">
+                    <thead className="bg-gray-100 border-b-2 border-gray-200">
                       <tr>
-                        <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500">
+                        <th className="text-left px-4 py-3 text-xs font-black text-gray-800 uppercase tracking-wide">
                           Produto
                         </th>
-                        <th className="text-right px-4 py-2.5 text-xs font-semibold text-pink-500">
+                        <th className="text-right px-4 py-3 text-xs font-black text-pink-700 uppercase tracking-wide">
                           RV
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-50">
+                    <tbody className="divide-y divide-gray-100">
                       {metrics.topProdutos.map((p) => (
-                        <tr key={p.produtoId} className="hover:bg-gray-50">
-                          <td className="px-4 py-2 font-medium text-gray-800">
+                        <tr
+                          key={p.produtoId}
+                          className="hover:bg-gray-50 transition-colors"
+                        >
+                          <td className="px-4 py-3 font-bold text-gray-900">
                             {p.produtoNome}
                           </td>
-                          <td className="px-4 py-2 text-right font-semibold text-pink-600 font-mono">
+                          <td className="px-4 py-3 text-right font-black text-pink-600 text-base">
                             {fmt(p.totalRV)}
                           </td>
                         </tr>
@@ -382,40 +391,43 @@ export default function Dashboard({ userRole }: DashboardProps) {
             </section>
 
             <section>
-              <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+              <h2 className="text-base font-black text-gray-900 uppercase tracking-wide mb-3">
                 Alertas de Estoque Baixo (EA ≤ 5)
               </h2>
-              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+              <div className="bg-white border-2 border-gray-200 rounded-xl overflow-hidden shadow-sm">
                 {metrics.alertasEstoque.length === 0 ? (
-                  <div className="p-6 text-center text-sm text-gray-400">
+                  <div className="p-6 text-center font-bold text-emerald-700 bg-emerald-50">
                     ✅ Nenhum alerta de estoque baixo
                   </div>
                 ) : (
                   <div className="overflow-y-auto max-h-80">
                     <table className="min-w-full text-sm">
-                      <thead className="bg-amber-50 border-b border-amber-100 sticky top-0">
+                      <thead className="bg-amber-100 border-b-2 border-amber-200 sticky top-0">
                         <tr>
-                          <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500">
+                          <th className="text-left px-4 py-3 text-xs font-black text-gray-800 uppercase tracking-wide">
                             Produto
                           </th>
-                          <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500">
+                          <th className="text-left px-4 py-3 text-xs font-black text-gray-800 uppercase tracking-wide">
                             Cor
                           </th>
-                          <th className="text-right px-4 py-2.5 text-xs font-semibold text-amber-600">
+                          <th className="text-right px-4 py-3 text-xs font-black text-amber-900 uppercase tracking-wide">
                             EA
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-50">
+                      <tbody className="divide-y divide-gray-100">
                         {metrics.alertasEstoque.map((a) => (
-                          <tr key={a.id} className="hover:bg-amber-50">
-                            <td className="px-4 py-2 text-gray-800 text-xs">
+                          <tr
+                            key={a.id}
+                            className="hover:bg-amber-50 transition-colors"
+                          >
+                            <td className="px-4 py-3 font-bold text-gray-900">
                               {a.produtoNome}
                             </td>
-                            <td className="px-4 py-2 text-gray-500 text-xs">
+                            <td className="px-4 py-3 font-semibold text-gray-700">
                               {a.corNome}
                             </td>
-                            <td className="px-4 py-2 text-right font-bold font-mono text-amber-700">
+                            <td className="px-4 py-3 text-right font-black text-amber-700 text-base">
                               {fmt(a.ea)}
                             </td>
                           </tr>

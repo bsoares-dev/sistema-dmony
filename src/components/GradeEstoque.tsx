@@ -126,12 +126,12 @@ function TabelaProduto({
                           onChange(item.id, "ei_local", e.target.value)
                         }
                         onKeyDown={(e) => onKeyDown(e, item.id, "ei")}
-                        className="grade-input"
+                        className="grade-input text-gray-900 font-bold bg-white"
                         data-item={item.id}
                         data-field="ei"
                       />
                     ) : (
-                      <div className="grade-input bg-gray-50 text-gray-600">
+                      <div className="grade-input bg-gray-50 text-gray-900 font-bold">
                         {item.ei.toLocaleString("pt-BR")}
                       </div>
                     )}
@@ -147,7 +147,7 @@ function TabelaProduto({
                         onChange(item.id, "p_local", e.target.value)
                       }
                       onKeyDown={(e) => onKeyDown(e, item.id, "p")}
-                      className="grade-input border-blue-200"
+                      className="grade-input border-blue-200 text-gray-900 font-bold bg-white"
                       data-item={item.id}
                       data-field="p"
                     />
@@ -163,13 +163,13 @@ function TabelaProduto({
                         onChange(item.id, "ea_local", e.target.value)
                       }
                       onKeyDown={(e) => onKeyDown(e, item.id, "ea")}
-                      className="grade-input border-emerald-200"
+                      className="grade-input border-emerald-200 text-gray-900 font-bold bg-white"
                       data-item={item.id}
                       data-field="ea"
                     />
                   </td>
                   <td className="px-3 py-1.5">
-                    <div className="grade-input bg-gray-50 text-gray-700">
+                    <div className="grade-input bg-gray-50 text-gray-900 font-bold">
                       {isFechado ? item.rv : rvExibido}
                     </div>
                   </td>
