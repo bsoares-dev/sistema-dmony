@@ -14,13 +14,13 @@ import { salvarRascunhoSchema } from "@/lib/validations";
 import type { ConflictItem, ProdutoGrade } from "@/types";
 
 interface Params {
-  params: { periodoId: string; corId: string };
+  params: Promise<{ periodoId: string; corId: string }>; // ATUALIZADO AQUI
 }
 
 // ── GET ────────────────────────────────────────────────────────────────────────
 
 export async function GET(_req: NextRequest, { params }: Params) {
-  const { periodoId, corId } = params;
+  const { periodoId, corId } = await params; // ATUALIZADO AQUI
 
   try {
     const [periodo, cor, registros] = await Promise.all([
@@ -103,7 +103,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
 // ── PUT ────────────────────────────────────────────────────────────────────────
 
 export async function PUT(req: NextRequest, { params }: Params) {
-  const { periodoId, corId } = params;
+  const { periodoId, corId } = await params; // ATUALIZADO AQUI
 
   // ── Validação de schema ─────────────────────────────────────────────────────
   let body: unknown;
@@ -245,6 +245,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
           p: Number(r.p),
           ea: Number(r.ea),
           rv: Number(r.rv),
+          version: r.version,
         })),
       },
     });
