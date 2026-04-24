@@ -60,12 +60,6 @@ function fmt(n: number) {
   return n.toLocaleString("pt-BR");
 }
 
-function fmtPercent(n: number | null) {
-  if (n === null) return "—";
-  const sign = n > 0 ? "+" : "";
-  return `${sign}${n.toFixed(1)}%`;
-}
-
 function MetricCard({
   label,
   value,
@@ -103,6 +97,7 @@ export default function Dashboard({ userRole }: DashboardProps) {
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [loadingMetrics, setLoadingMetrics] = useState(false);
   const [closing, setClosing] = useState(false);
+  const [criando, setCriando] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [showConfirmClose, setShowConfirmClose] = useState(false);
 
@@ -137,7 +132,6 @@ export default function Dashboard({ userRole }: DashboardProps) {
       .then((r) => r.json())
       .then((data) => {
         if (data.success) setMetrics(data.data);
-        // Não exibe erro na tela se falhar, apenas deixa as métricas vazias para não sumir com o botão de fechar.
       })
       .catch(() => console.error("Erro ao carregar métricas"))
       .finally(() => setLoadingMetrics(false));
@@ -158,17 +152,13 @@ export default function Dashboard({ userRole }: DashboardProps) {
 
       if (res.ok && data.success) {
         toast.success(
-          `Período "${data.data.periodoFechadoNome}" encerrado! Novo período "${data.data.novoPeriodoNome}" criado.`,
+          `Período encerrado! Novo período criado automaticamente.`,
           { id: toastId, duration: 7000 },
         );
         await loadPeriodos();
-        setPeriodoSelecionado(data.data.novoPeriodoId);
-      } else if (res.status === 422) {
-        toast.error(
-          data.error ??
-            "Erro de validação. Certifique-se de preencher algo no estoque.",
-          { id: toastId, duration: 8000 },
-        );
+        if (data.data.novoPeriodoId) {
+          setPeriodoSelecionado(data.data.novoPeriodoId);
+        }
       } else {
         toast.error(data.error ?? "Erro ao encerrar período", { id: toastId });
       }
@@ -176,6 +166,31 @@ export default function Dashboard({ userRole }: DashboardProps) {
       toast.error("Erro de rede. Tente novamente.", { id: toastId });
     } finally {
       setClosing(false);
+    }
+  }
+
+  // NOVA FUNÇÃO: Botão de Emergência para abrir mês manual
+  async function handleCriarNovo() {
+    setCriando(true);
+    const toastId = toast.loading("Abrindo novo período...");
+    try {
+      const proximoNumero = periodos.length + 1;
+      const res = await fetch("/api/periodos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome: `Período ${proximoNumero}` }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success("Novo período aberto com sucesso!", { id: toastId });
+        await loadPeriodos();
+      } else {
+        toast.error(data.error || "Erro ao criar", { id: toastId });
+      }
+    } catch (error) {
+      toast.error("Falha de conexão.", { id: toastId });
+    } finally {
+      setCriando(false);
     }
   }
 
@@ -212,9 +227,11 @@ export default function Dashboard({ userRole }: DashboardProps) {
     }
   }
 
-  // A GRANDE CORREÇÃO: Agora ele lê se tá aberto direto da lista de períodos, sem depender das métricas!
   const periodoAtual = periodos.find((p) => p.id === periodoSelecionado);
   const isAberto = periodoAtual?.status === "ABERTO";
+
+  // Verifica se não existe NENHUM período aberto na loja inteira
+  const naoTemPeriodoAberto = !periodos.some((p) => p.status === "ABERTO");
 
   return (
     <div className="space-y-6">
@@ -256,6 +273,7 @@ export default function Dashboard({ userRole }: DashboardProps) {
             {exporting ? "⏳ Exportando..." : "⬇ Exportar CSV"}
           </button>
 
+          {/* Renderiza o botão de ENCERRAR se estiver aberto */}
           {isGerente && isAberto && (
             <>
               {showConfirmClose ? (
@@ -287,6 +305,17 @@ export default function Dashboard({ userRole }: DashboardProps) {
                 </button>
               )}
             </>
+          )}
+
+          {/* Renderiza o botão de ABRIR NOVO se estiver tudo fechado */}
+          {isGerente && naoTemPeriodoAberto && (
+            <button
+              onClick={handleCriarNovo}
+              disabled={criando}
+              className="bg-emerald-600 text-white hover:bg-emerald-700 font-bold px-5 py-2 rounded-lg shadow-md transition-colors border-2 border-emerald-700"
+            >
+              {criando ? "Abrindo..." : "🔓 Abrir Novo Período"}
+            </button>
           )}
         </div>
       </div>
