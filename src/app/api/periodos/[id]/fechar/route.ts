@@ -29,11 +29,10 @@ export async function POST(req: NextRequest, { params }: Params) {
       );
     if (periodoAtual.status === "FECHADO")
       return NextResponse.json(
-        { success: false, error: "Período já está fechado (imutável)" },
+        { success: false, error: "Período já está fechado" },
         { status: 409 },
       );
 
-    // Busca os registros SEM incluir as relações (tamanho/cor) para ficar ultra leve na memória
     const registros = await prisma.estoquePeriodo.findMany({
       where: { periodoId },
     });
@@ -60,7 +59,7 @@ export async function POST(req: NextRequest, { params }: Params) {
         ea = Number(r.ea),
         maxEA = ei + p;
       if (ea > maxEA) {
-        errosConsistencia.push({ id: r.id, maxEA }); // Simplificado para economizar RAM
+        errosConsistencia.push({ id: r.id, maxEA });
       }
     }
 
@@ -74,7 +73,7 @@ export async function POST(req: NextRequest, { params }: Params) {
       );
 
     // =========================================================================
-    // NOVA ABORDAGEM: FILA INDIANA (Zero travamento de memória)
+    // A ESTRATÉGIA DO PELOTÃO (Seguro para o limite de variáveis do SQLite)
     // =========================================================================
 
     // 1. Busca ou Cria Novo Período
@@ -93,25 +92,33 @@ export async function POST(req: NextRequest, { params }: Params) {
       });
     }
 
-    // 2. Limpa registros parciais do novo período (caso a tentativa anterior tenha falhado no meio)
+    // 2. Limpa os resquícios do Período "Fantasma" que deu erro na última vez
     await prisma.estoquePeriodo.deleteMany({
       where: { periodoId: novoPeriodo.id },
     });
 
-    // 3. ATUALIZAÇÃO EM FILA INDIANA (Um por um, sem sobrecarregar a porta)
+    // 3. Atualização Rápida usando 1 única conexão por lote (Trem de Carga)
     let totalRVCalculado = 0;
+    const chunkSize = 200;
 
-    for (const r of registros) {
-      const rv = Number(r.ei) + Number(r.p) - Number(r.ea);
-      totalRVCalculado += rv;
+    for (let i = 0; i < registros.length; i += chunkSize) {
+      const chunk = registros.slice(i, i + chunkSize);
 
-      await prisma.estoquePeriodo.update({
-        where: { id: r.id },
-        data: { rv },
+      // Prepara os 200 pacotes
+      const operacoes = chunk.map((r) => {
+        const rv = Number(r.ei) + Number(r.p) - Number(r.ea);
+        totalRVCalculado += rv;
+        return prisma.estoquePeriodo.update({
+          where: { id: r.id },
+          data: { rv },
+        });
       });
+
+      // Manda os 200 pacotes usando APENAS 1 conexão com o banco!
+      await prisma.$transaction(operacoes);
     }
 
-    // 4. Criação da Herança (Estoque Inicial do próximo mês)
+    // 4. Criação da Herança (Estoque Inicial do Mês Novo)
     const novosRegistros = registros.map((r) => ({
       periodoId: novoPeriodo!.id,
       produtoId: r.produtoId,
@@ -124,15 +131,15 @@ export async function POST(req: NextRequest, { params }: Params) {
       version: 1,
     }));
 
-    // 5. Inserindo em lotes ultra seguros de 500 pra não bater limite de variáveis do SQLite
-    for (let i = 0; i < novosRegistros.length; i += 500) {
+    // Inserindo em lotes Piquenininhos de 100 pra não explodir o SQLite
+    // REMOVIDO o skipDuplicates que causava o crash!
+    for (let i = 0; i < novosRegistros.length; i += 100) {
       await prisma.estoquePeriodo.createMany({
-        data: novosRegistros.slice(i, i + 500),
-        skipDuplicates: true,
+        data: novosRegistros.slice(i, i + 100),
       });
     }
 
-    // 6. Tranca o período atual com sucesso!
+    // 5. Missão cumprida: Tranca o período atual (agora ele vai trancar!)
     await prisma.periodo.update({
       where: { id: periodoId },
       data: { status: "FECHADO" },

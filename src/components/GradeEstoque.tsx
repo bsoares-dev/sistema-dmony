@@ -392,7 +392,7 @@ export default function GradeEstoque({
             <button
               onClick={handleSalvar}
               disabled={saving || loadingGrade || totalDirty === 0}
-              className="btn-primary"
+              className="bg-emerald-600 text-white font-bold py-2 px-6 rounded-lg transition-colors hover:bg-emerald-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
             >
               {saving ? "Salvando..." : `Salvar Contagem`}
             </button>
