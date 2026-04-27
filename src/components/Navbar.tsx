@@ -78,6 +78,7 @@ export default function Navbar() {
     { href: "/", label: "Dashboard" },
     { href: "/estoque", label: "Grade de Estoque" },
     { href: "/cadastro", label: "Cadastros" },
+    { href: "/custos", label: "Custos" },
   ];
 
   return (

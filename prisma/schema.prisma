@@ -18,14 +18,20 @@ datasource db {
 // ------------------------------------------------------------
 
 model Produto {
-  id         String   @id @default(cuid())
-  nome       String   @unique
+  id              String   @id @default(cuid())
+  nome            String   @unique
   // "GRUPO_1" | "GRUPO_2" | "GRUPO_3" | "GRUPO_4"
   // Determina qual grade de tamanhos o produto usa
-  grupoGrade String
-  ativo      Boolean  @default(true)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  grupoGrade      String
+  ativo           Boolean  @default(true)
+
+  // NOSSOS NOVOS CAMPOS FINANCEIROS
+  custo           Decimal  @default(0) @db.Decimal(12, 2)
+  precoVarejo     Decimal  @default(0) @db.Decimal(12, 2)
+  precoAtacado    Decimal  @default(0) @db.Decimal(12, 2)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   estoquePeriodos EstoquePeriodo[]
 
