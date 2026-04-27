@@ -1,0 +1,877 @@
+{
+  "cores": [
+    {
+      "id": "cmo35qxk90000myvq3ul69jbb",
+      "nome": "Branca",
+      "ordem": 1,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb0001myvqgo6wpjn0",
+      "nome": "Preta",
+      "ordem": 2,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb0002myvqmd2j2xyf",
+      "nome": "Nude",
+      "ordem": 3,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb0003myvqm6pknu4o",
+      "nome": "Satin",
+      "ordem": 4,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb0004myvqrb0v6uap",
+      "nome": "Divino",
+      "ordem": 5,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb0005myvqpbekwsqz",
+      "nome": "Chocolate",
+      "ordem": 6,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb0006myvqt9o4faoe",
+      "nome": "Marinho",
+      "ordem": 7,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb0007myvquh6ducm7",
+      "nome": "Cuecas",
+      "ordem": 8,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb0008myvqoupsdikp",
+      "nome": "Cotton",
+      "ordem": 9,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb0009myvqtwpkhm4c",
+      "nome": "Reforçado",
+      "ordem": 10,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb000amyvqw5634k8u",
+      "nome": "Tule-Sensual",
+      "ordem": 11,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb000bmyvq6smngecd",
+      "nome": "Onça",
+      "ordem": 12,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb000cmyvqu8msv3ud",
+      "nome": "Azul Frozen",
+      "ordem": 13,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb000dmyvqvhjshsya",
+      "nome": "Pink",
+      "ordem": 14,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb000emyvqor5xpbfl",
+      "nome": "Amarelo",
+      "ordem": 15,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb000fmyvqppdikp1s",
+      "nome": "Verão",
+      "ordem": 16,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmo35qxkb000gmyvqhbjkkgz6",
+      "nome": "Inverno",
+      "ordem": 17,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:03:59.332Z",
+      "updatedAt": "2026-04-17T17:03:59.332Z"
+    },
+    {
+      "id": "cmobp6euo0000nfmj532yx2p1",
+      "nome": "PRETO",
+      "ordem": 18,
+      "ativo": true,
+      "createdAt": "2026-04-23T16:30:03.697Z",
+      "updatedAt": "2026-04-23T16:30:03.697Z"
+    },
+    {
+      "id": "cmobpjdvm0000hkzhmb3l4pf7",
+      "nome": "preto",
+      "ordem": 19,
+      "ativo": true,
+      "createdAt": "2026-04-23T16:40:08.962Z",
+      "updatedAt": "2026-04-23T16:40:08.962Z"
+    }
+  ],
+  "tamanhos": [
+    {
+      "id": "cmo35qyiv000hmyvqftmhp3yv",
+      "nome": "38 liso",
+      "grupo": "GRUPO_1",
+      "ordem": 1,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000imyvq14gmgfms",
+      "nome": "38 bolha",
+      "grupo": "GRUPO_1",
+      "ordem": 2,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000jmyvq7qgbpuwo",
+      "nome": "40 liso",
+      "grupo": "GRUPO_1",
+      "ordem": 3,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000kmyvqmsjbk7v5",
+      "nome": "40 bolha",
+      "grupo": "GRUPO_1",
+      "ordem": 4,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000lmyvqm0drcj98",
+      "nome": "42 liso",
+      "grupo": "GRUPO_1",
+      "ordem": 5,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000mmyvq8tto278x",
+      "nome": "42 bolha",
+      "grupo": "GRUPO_1",
+      "ordem": 6,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000nmyvq3yy9rbpl",
+      "nome": "44 liso",
+      "grupo": "GRUPO_1",
+      "ordem": 7,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000omyvqxu3fx3wb",
+      "nome": "44 bolha",
+      "grupo": "GRUPO_1",
+      "ordem": 8,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000pmyvquh1ruej2",
+      "nome": "46",
+      "grupo": "GRUPO_1",
+      "ordem": 9,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000qmyvqhcbzu3b0",
+      "nome": "48",
+      "grupo": "GRUPO_1",
+      "ordem": 10,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000rmyvqovw2sana",
+      "nome": "50",
+      "grupo": "GRUPO_1",
+      "ordem": 11,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000smyvqpt4qjyqp",
+      "nome": "52",
+      "grupo": "GRUPO_1",
+      "ordem": 12,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qyiv000tmyvq82veze7e",
+      "nome": "54",
+      "grupo": "GRUPO_1",
+      "ordem": 13,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:00.584Z",
+      "updatedAt": "2026-04-17T17:04:00.584Z"
+    },
+    {
+      "id": "cmo35qz3y000umyvqmwepejau",
+      "nome": "42",
+      "grupo": "GRUPO_2",
+      "ordem": 1,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:01.343Z",
+      "updatedAt": "2026-04-17T17:04:01.343Z"
+    },
+    {
+      "id": "cmo35qz3y000vmyvqw0c6eir4",
+      "nome": "44",
+      "grupo": "GRUPO_2",
+      "ordem": 2,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:01.343Z",
+      "updatedAt": "2026-04-17T17:04:01.343Z"
+    },
+    {
+      "id": "cmo35qz3y000wmyvqgf3u6g7z",
+      "nome": "46",
+      "grupo": "GRUPO_2",
+      "ordem": 3,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:01.343Z",
+      "updatedAt": "2026-04-17T17:04:01.343Z"
+    },
+    {
+      "id": "cmo35qz3y000xmyvq5wtm0qbm",
+      "nome": "48",
+      "grupo": "GRUPO_2",
+      "ordem": 4,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:01.343Z",
+      "updatedAt": "2026-04-17T17:04:01.343Z"
+    },
+    {
+      "id": "cmo35qz3y000ymyvq69zwgjib",
+      "nome": "50",
+      "grupo": "GRUPO_2",
+      "ordem": 5,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:01.343Z",
+      "updatedAt": "2026-04-17T17:04:01.343Z"
+    },
+    {
+      "id": "cmo35qz3y000zmyvq4wn859kj",
+      "nome": "52",
+      "grupo": "GRUPO_2",
+      "ordem": 6,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:01.343Z",
+      "updatedAt": "2026-04-17T17:04:01.343Z"
+    },
+    {
+      "id": "cmo35qz3y0010myvqwzibsjuh",
+      "nome": "54",
+      "grupo": "GRUPO_2",
+      "ordem": 7,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:01.343Z",
+      "updatedAt": "2026-04-17T17:04:01.343Z"
+    },
+    {
+      "id": "cmo35qzry0011myvqf4a15qkv",
+      "nome": "P",
+      "grupo": "GRUPO_3",
+      "ordem": 1,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:02.206Z",
+      "updatedAt": "2026-04-17T17:04:02.206Z"
+    },
+    {
+      "id": "cmo35qzry0012myvqkk7lsyf7",
+      "nome": "M",
+      "grupo": "GRUPO_3",
+      "ordem": 2,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:02.206Z",
+      "updatedAt": "2026-04-17T17:04:02.206Z"
+    },
+    {
+      "id": "cmo35qzry0013myvqpwppcm3s",
+      "nome": "G",
+      "grupo": "GRUPO_3",
+      "ordem": 3,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:02.206Z",
+      "updatedAt": "2026-04-17T17:04:02.206Z"
+    },
+    {
+      "id": "cmo35qzry0014myvq3dacvbc4",
+      "nome": "GG",
+      "grupo": "GRUPO_3",
+      "ordem": 4,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:02.206Z",
+      "updatedAt": "2026-04-17T17:04:02.206Z"
+    },
+    {
+      "id": "cmo35qzry0015myvqenihnfd1",
+      "nome": "XGG",
+      "grupo": "GRUPO_3",
+      "ordem": 5,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:02.206Z",
+      "updatedAt": "2026-04-17T17:04:02.206Z"
+    },
+    {
+      "id": "cmo35r0c60016myvqsb7oz2wz",
+      "nome": "P",
+      "grupo": "GRUPO_4",
+      "ordem": 1,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:02.934Z",
+      "updatedAt": "2026-04-17T17:04:02.934Z"
+    },
+    {
+      "id": "cmo35r0c60017myvqek6n279q",
+      "nome": "M",
+      "grupo": "GRUPO_4",
+      "ordem": 2,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:02.934Z",
+      "updatedAt": "2026-04-17T17:04:02.934Z"
+    },
+    {
+      "id": "cmo35r0c60018myvqa3tjrsyu",
+      "nome": "G",
+      "grupo": "GRUPO_4",
+      "ordem": 3,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:02.934Z",
+      "updatedAt": "2026-04-17T17:04:02.934Z"
+    },
+    {
+      "id": "cmo35r0c60019myvqyqqsroug",
+      "nome": "GG",
+      "grupo": "GRUPO_4",
+      "ordem": 4,
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:02.934Z",
+      "updatedAt": "2026-04-17T17:04:02.934Z"
+    }
+  ],
+  "produtos": [
+    {
+      "id": "cmo35r17m001amyvq5iuv5q15",
+      "nome": "Sutiã Alice",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17m001bmyvqv2807s1l",
+      "nome": "Sutiã Heloise",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17m001cmyvq9ioklmby",
+      "nome": "Sutiã Laís",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17m001dmyvqsidbtyby",
+      "nome": "Sutiã Meg",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17m001emyvqb6i17ncq",
+      "nome": "Sutiã Micro Bojo c/ Base",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17m001fmyvqoihp0kog",
+      "nome": "Sutiã Thais 1",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17m001gmyvqdfmz4nhx",
+      "nome": "Sutiã Carol",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17m001hmyvq1hy3ipry",
+      "nome": "Sutiã Karen",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17m001imyvqvl5jr3cf",
+      "nome": "Sutiã Micro Bojo Cruzado 1 sem base",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17m001jmyvqqjoaezy7",
+      "nome": "Sutiã Micro Bojo Cruzado Com Base",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17m001kmyvqmi8wgemj",
+      "nome": "Sutiã Nadador Com Base Trad",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17n001lmyvqbu6wxxfp",
+      "nome": "Sutiã Nadador Com Base Extra",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17n001mmyvqhef91nyl",
+      "nome": "Sutiã Nadador Sem Base",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17n001nmyvqkux5oob1",
+      "nome": "Sutiã Paty",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17n001omyvqhpb8ag2t",
+      "nome": "Sutiã TQC Domitila",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17n001pmyvqpo6oygdt",
+      "nome": "Sutiã TQC Micro Trad",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17n001qmyvqos6xpu6y",
+      "nome": "Sutiã TQC Micro Extra",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17n001rmyvqccjm2htx",
+      "nome": "Cropped Fernanda",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17n001smyvq7znw8kwu",
+      "nome": "Corpet Letícia Renda",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17n001tmyvqx19ckp55",
+      "nome": "Corpet Meg Comprido",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17n001umyvqyp1agqtm",
+      "nome": "Corpet Meg Forrado",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r17n001vmyvqsb5j14qt",
+      "nome": "Corpet Micro Bojo c/ alça",
+      "grupoGrade": "GRUPO_1",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.067Z",
+      "updatedAt": "2026-04-17T17:04:04.067Z"
+    },
+    {
+      "id": "cmo35r1ul001wmyvqqtv70tgs",
+      "nome": "Sutiã Bella",
+      "grupoGrade": "GRUPO_2",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.893Z",
+      "updatedAt": "2026-04-17T17:04:04.893Z"
+    },
+    {
+      "id": "cmo35r1ul001xmyvq7n0wpwm0",
+      "nome": "Sutiã Mel",
+      "grupoGrade": "GRUPO_2",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.893Z",
+      "updatedAt": "2026-04-17T17:04:04.893Z"
+    },
+    {
+      "id": "cmo35r1ul001ymyvqj63eukgv",
+      "nome": "Sutiã Sara c/ aro",
+      "grupoGrade": "GRUPO_2",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.893Z",
+      "updatedAt": "2026-04-17T17:04:04.893Z"
+    },
+    {
+      "id": "cmo35r1ul001zmyvqzh1kj034",
+      "nome": "Sutiã Vitória",
+      "grupoGrade": "GRUPO_2",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.893Z",
+      "updatedAt": "2026-04-17T17:04:04.893Z"
+    },
+    {
+      "id": "cmo35r1ul0020myvqvsgoibgv",
+      "nome": "Top Sara Renda",
+      "grupoGrade": "GRUPO_2",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.893Z",
+      "updatedAt": "2026-04-17T17:04:04.893Z"
+    },
+    {
+      "id": "cmo35r1ul0021myvqkuqr3n0s",
+      "nome": "Sutiã Olga",
+      "grupoGrade": "GRUPO_2",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.893Z",
+      "updatedAt": "2026-04-17T17:04:04.893Z"
+    },
+    {
+      "id": "cmo35r1ul0022myvqkwi6kujb",
+      "nome": "Sutiã Carla Plus Size",
+      "grupoGrade": "GRUPO_2",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:04.893Z",
+      "updatedAt": "2026-04-17T17:04:04.893Z"
+    },
+    {
+      "id": "cmo35r2e70023myvq4q6xtuqy",
+      "nome": "Tanga Alice",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e70024myvqbaasls1f",
+      "nome": "Tanga Lais Fio Duplo",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e70025myvqkgipcdv4",
+      "nome": "Tanga Leticia Fio Duplo",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e70026myvq2dy3v8fv",
+      "nome": "Tanga Mariah Fio Duplo",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e70027myvq7qkbb8dc",
+      "nome": "Tanga Mariah Trad",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e70028myvqjiepjm64",
+      "nome": "Tanga Meg",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e70029myvqvp1he9io",
+      "nome": "Tanga Micro 1",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002amyvqqx1ylp1u",
+      "nome": "Tanga Micro 2",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002bmyvqrqghurfh",
+      "nome": "Tanga Micro 3",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002cmyvqqc5rwu6o",
+      "nome": "Tanga Micro Fio Duplo",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002dmyvqidmp2gk0",
+      "nome": "Tanga Micro Tirinha Fio",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002emyvqwqswcvje",
+      "nome": "Tanga Micro Tirinha Trad",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002fmyvqvx6gtalq",
+      "nome": "Tanga Nataly",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002gmyvqp2tq0qj5",
+      "nome": "Tanga Paloma Fio Duplo",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002hmyvq6jnyu2l7",
+      "nome": "Tanga Sara Renda Fio",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002imyvqcuuyidym",
+      "nome": "Tanga Scarlet 1",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002jmyvqv0cijwkv",
+      "nome": "Tanga Scarlet 2",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002kmyvqxc3pxv3h",
+      "nome": "Tanga Scarlet Fio Duplo",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002lmyvq884uuopg",
+      "nome": "Tanga Taina 1",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002mmyvqznkxrybp",
+      "nome": "Tanga Taina Fio Duplo",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002nmyvqegxrw4cd",
+      "nome": "Tanga Thais Fio Duplo",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002omyvqenvc0e57",
+      "nome": "Tanga Thais Tirinha Fio Duplo",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002pmyvqsmdihmbx",
+      "nome": "Tanga Vitória 2 Fio Duplo",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2e7002qmyvqbla9cfi0",
+      "nome": "Short Gabriela",
+      "grupoGrade": "GRUPO_3",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:05.599Z",
+      "updatedAt": "2026-04-17T17:04:05.599Z"
+    },
+    {
+      "id": "cmo35r2wz002rmyvqjqzutna9",
+      "nome": "Tangão Celina",
+      "grupoGrade": "GRUPO_4",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:06.275Z",
+      "updatedAt": "2026-04-17T17:04:06.275Z"
+    },
+    {
+      "id": "cmo35r2wz002smyvqjwsju65a",
+      "nome": "Tangão Diva",
+      "grupoGrade": "GRUPO_4",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:06.275Z",
+      "updatedAt": "2026-04-17T17:04:06.275Z"
+    },
+    {
+      "id": "cmo35r2wz002tmyvqtsdh2cve",
+      "nome": "Calc Boxer Alta adulto",
+      "grupoGrade": "GRUPO_4",
+      "ativo": true,
+      "createdAt": "2026-04-17T17:04:06.275Z",
+      "updatedAt": "2026-04-17T17:04:06.275Z"
+    },
+    {
+      "id": "cmobfb2ck00002e5nbxd50hwf",
+      "nome": "TANGA ALICE",
+      "grupoGrade": "GRUPO_4",
+      "ativo": true,
+      "createdAt": "2026-04-23T11:53:41.962Z",
+      "updatedAt": "2026-04-23T11:53:41.962Z"
+    }
+  ]
+}
