@@ -4,7 +4,7 @@
 //         Período Bootstrap + EstoquePeriodo (estrutura zerada)
 // ============================================================
 
-import { PrismaClient, Decimal } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
