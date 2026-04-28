@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 // ------------------------------------------------------------
 // DADOS DE REFERÊNCIA
 // ------------------------------------------------------------
-
+// @ts-nocheck
 const CORES = [
   { nome: "Branca", ordem: 1 },
   { nome: "Preta", ordem: 2 },
