@@ -7,25 +7,27 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-interface Params {
-  params: { id: string };
-}
+export async function GET(_req: NextRequest, context: any) {
+  const params = await context.params;
+  const id = params.id;
 
-export async function GET(_req: NextRequest, { params }: Params) {
   try {
-    const cor = await prisma.cor.findUnique({ where: { id: params.id } });
+    const cor = await prisma.cor.findUnique({ where: { id } });
 
     if (!cor) {
       return NextResponse.json(
         { success: false, error: "Cor não encontrada" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     return NextResponse.json({ success: true, data: cor });
   } catch (error) {
     console.error("[GET /api/cores/[id]]", error);
-    return NextResponse.json({ success: false, error: "Erro interno" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Erro interno" },
+      { status: 500 },
+    );
   }
 }
 
@@ -35,27 +37,34 @@ const patchSchema = z.object({
   ativo: z.boolean().optional(),
 });
 
-export async function PATCH(req: NextRequest, { params }: Params) {
+export async function PATCH(req: NextRequest, context: any) {
+  const params = await context.params;
+  const id = params.id;
+
   const body = await req.json().catch(() => null);
   const parsed = patchSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json(
-      { success: false, error: "Dados inválidos", details: parsed.error.flatten() },
-      { status: 400 }
+      {
+        success: false,
+        error: "Dados inválidos",
+        details: parsed.error.flatten(),
+      },
+      { status: 400 },
     );
   }
 
   if (Object.keys(parsed.data).length === 0) {
     return NextResponse.json(
       { success: false, error: "Nenhum campo para atualizar" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   try {
     const cor = await prisma.cor.update({
-      where: { id: params.id },
+      where: { id },
       data: parsed.data,
     });
     return NextResponse.json({ success: true, data: cor });
@@ -63,29 +72,35 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     if (error?.code === "P2025") {
       return NextResponse.json(
         { success: false, error: "Cor não encontrada" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     if (error?.code === "P2002") {
       return NextResponse.json(
         { success: false, error: "Já existe uma cor com este nome" },
-        { status: 409 }
+        { status: 409 },
       );
     }
     console.error("[PATCH /api/cores/[id]]", error);
-    return NextResponse.json({ success: false, error: "Erro interno" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Erro interno" },
+      { status: 500 },
+    );
   }
 }
 
-export async function DELETE(_req: NextRequest, { params }: Params) {
+export async function DELETE(_req: NextRequest, context: any) {
+  const params = await context.params;
+  const id = params.id;
+
   try {
     const totalVinculados = await prisma.estoquePeriodo.count({
-      where: { corId: params.id },
+      where: { corId: id },
     });
 
     if (totalVinculados > 0) {
       const cor = await prisma.cor.update({
-        where: { id: params.id },
+        where: { id },
         data: { ativo: false },
       });
       return NextResponse.json({
@@ -95,16 +110,23 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
       });
     }
 
-    await prisma.cor.delete({ where: { id: params.id } });
-    return NextResponse.json({ success: true, data: null, message: "Cor excluída" });
+    await prisma.cor.delete({ where: { id } });
+    return NextResponse.json({
+      success: true,
+      data: null,
+      message: "Cor excluída",
+    });
   } catch (error: any) {
     if (error?.code === "P2025") {
       return NextResponse.json(
         { success: false, error: "Cor não encontrada" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     console.error("[DELETE /api/cores/[id]]", error);
-    return NextResponse.json({ success: false, error: "Erro interno" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Erro interno" },
+      { status: 500 },
+    );
   }
 }

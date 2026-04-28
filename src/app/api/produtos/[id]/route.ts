@@ -7,22 +7,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-interface Params {
-  params: { id: string };
-}
-
 // ── GET ───────────────────────────────────────────────────────
 
-export async function GET(_req: NextRequest, { params }: Params) {
+export async function GET(req: NextRequest, context: any) {
+  const params = await context.params;
+  const id = params.id;
+
   try {
     const produto = await prisma.produto.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!produto) {
       return NextResponse.json(
         { success: false, error: "Produto não encontrado" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -31,7 +30,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
     console.error("[GET /api/produtos/[id]]", error);
     return NextResponse.json(
       { success: false, error: "Erro interno" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -40,20 +39,25 @@ export async function GET(_req: NextRequest, { params }: Params) {
 
 const patchSchema = z.object({
   nome: z.string().min(1).max(120).optional(),
-  grupoGrade: z
-    .enum(["GRUPO_1", "GRUPO_2", "GRUPO_3", "GRUPO_4"])
-    .optional(),
+  grupoGrade: z.enum(["GRUPO_1", "GRUPO_2", "GRUPO_3", "GRUPO_4"]).optional(),
   ativo: z.boolean().optional(),
 });
 
-export async function PATCH(req: NextRequest, { params }: Params) {
+export async function PATCH(req: NextRequest, context: any) {
+  const params = await context.params;
+  const id = params.id;
+
   const body = await req.json().catch(() => null);
   const parsed = patchSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json(
-      { success: false, error: "Dados inválidos", details: parsed.error.flatten() },
-      { status: 400 }
+      {
+        success: false,
+        error: "Dados inválidos",
+        details: parsed.error.flatten(),
+      },
+      { status: 400 },
     );
   }
 
@@ -61,13 +65,13 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   if (Object.keys(parsed.data).length === 0) {
     return NextResponse.json(
       { success: false, error: "Nenhum campo para atualizar" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   try {
     const produto = await prisma.produto.update({
-      where: { id: params.id },
+      where: { id },
       data: parsed.data,
     });
 
@@ -76,19 +80,19 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     if (error?.code === "P2025") {
       return NextResponse.json(
         { success: false, error: "Produto não encontrado" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     if (error?.code === "P2002") {
       return NextResponse.json(
         { success: false, error: "Já existe um produto com este nome" },
-        { status: 409 }
+        { status: 409 },
       );
     }
     console.error("[PATCH /api/produtos/[id]]", error);
     return NextResponse.json(
       { success: false, error: "Erro interno" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -97,17 +101,20 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 // Não deleta fisicamente para preservar histórico de EstoquePeriodo.
 // Apenas marca ativo = false.
 
-export async function DELETE(_req: NextRequest, { params }: Params) {
+export async function DELETE(req: NextRequest, context: any) {
+  const params = await context.params;
+  const id = params.id;
+
   try {
     // Verifica se há registros de estoque vinculados
     const totalVinculados = await prisma.estoquePeriodo.count({
-      where: { produtoId: params.id },
+      where: { produtoId: id },
     });
 
     if (totalVinculados > 0) {
       // Soft delete — preserva histórico
       const produto = await prisma.produto.update({
-        where: { id: params.id },
+        where: { id },
         data: { ativo: false },
       });
       return NextResponse.json({
@@ -118,7 +125,7 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
     }
 
     // Sem histórico: pode deletar fisicamente
-    await prisma.produto.delete({ where: { id: params.id } });
+    await prisma.produto.delete({ where: { id } });
     return NextResponse.json({
       success: true,
       data: null,
@@ -128,13 +135,13 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
     if (error?.code === "P2025") {
       return NextResponse.json(
         { success: false, error: "Produto não encontrado" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     console.error("[DELETE /api/produtos/[id]]", error);
     return NextResponse.json(
       { success: false, error: "Erro interno" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

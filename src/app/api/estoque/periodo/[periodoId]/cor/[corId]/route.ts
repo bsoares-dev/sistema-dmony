@@ -1,26 +1,12 @@
 // src/app/api/estoque/periodo/[periodoId]/cor/[corId]/route.ts
-//
-// GET  → Retorna grade de estoque para um período+cor específicos
-// PUT  → Salva rascunho da contagem com validação OCC (versão)
-//
-// OCC (Optimistic Concurrency Control):
-//   1. Cliente envia `version` que leu do banco.
-//   2. Servidor valida todos: se qualquer version divergir → HTTP 409.
-//   3. Se tudo OK → atualiza tudo em transação, incrementa version.
-
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { salvarRascunhoSchema } from "@/lib/validations";
 import type { ConflictItem, ProdutoGrade } from "@/types";
 
-interface Params {
-  params: Promise<{ periodoId: string; corId: string }>; // ATUALIZADO AQUI
-}
-
-// ── GET ────────────────────────────────────────────────────────────────────────
-
-export async function GET(_req: NextRequest, { params }: Params) {
-  const { periodoId, corId } = await params; // ATUALIZADO AQUI
+export async function GET(_req: NextRequest, context: any) {
+  const params = await context.params;
+  const { periodoId, corId } = params;
 
   try {
     const [periodo, cor, registros] = await Promise.all([
@@ -50,7 +36,6 @@ export async function GET(_req: NextRequest, { params }: Params) {
       );
     }
 
-    // Agrupa por produto
     const produtosMap = new Map<string, ProdutoGrade>();
 
     for (const r of registros) {
@@ -100,12 +85,10 @@ export async function GET(_req: NextRequest, { params }: Params) {
   }
 }
 
-// ── PUT ────────────────────────────────────────────────────────────────────────
+export async function PUT(req: NextRequest, context: any) {
+  const params = await context.params;
+  const { periodoId, corId } = params;
 
-export async function PUT(req: NextRequest, { params }: Params) {
-  const { periodoId, corId } = await params; // ATUALIZADO AQUI
-
-  // ── Validação de schema ─────────────────────────────────────────────────────
   let body: unknown;
   try {
     body = await req.json();
@@ -131,7 +114,6 @@ export async function PUT(req: NextRequest, { params }: Params) {
   const { items } = parsed.data;
 
   try {
-    // ── Verifica se período existe e está ABERTO ──────────────────────────────
     const periodo = await prisma.periodo.findUnique({
       where: { id: periodoId },
     });
@@ -153,14 +135,12 @@ export async function PUT(req: NextRequest, { params }: Params) {
       );
     }
 
-    // ── OCC: Lê versões atuais do banco ──────────────────────────────────────
     const ids = items.map((i) => i.id);
     const registrosAtuais = await prisma.estoquePeriodo.findMany({
       where: { id: { in: ids }, periodoId, corId },
       select: { id: true, version: true },
     });
 
-    // Valida que todos os IDs foram encontrados no banco
     if (registrosAtuais.length !== ids.length) {
       const encontrados = new Set(registrosAtuais.map((r) => r.id));
       const naoEncontrados = ids.filter((id) => !encontrados.has(id));
@@ -176,7 +156,6 @@ export async function PUT(req: NextRequest, { params }: Params) {
 
     const versionMap = new Map(registrosAtuais.map((r) => [r.id, r.version]));
 
-    // Detecta conflitos de versão
     const conflitos: ConflictItem[] = [];
     for (const item of items) {
       const versionServidor = versionMap.get(item.id)!;
@@ -200,16 +179,14 @@ export async function PUT(req: NextRequest, { params }: Params) {
       );
     }
 
-    // ── Atualiza em transação — todos ou nenhum ──────────────────────────────
     const atualizados = await prisma.$transaction(
       items.map((item) => {
         const updateData: Record<string, unknown> = {
           p: item.p,
           ea: item.ea,
-          version: { increment: 1 }, // OCC: incrementa version
+          version: { increment: 1 },
         };
 
-        // EI manual permitido apenas em períodos bootstrap
         if (periodo.isBootstrap && item.ei !== undefined) {
           updateData.ei = item.ei;
         }
@@ -217,10 +194,9 @@ export async function PUT(req: NextRequest, { params }: Params) {
         return prisma.estoquePeriodo.update({
           where: {
             id: item.id,
-            // Double-check de segurança: garante que pertence ao período+cor certo
             periodoId,
             corId,
-            version: item.version, // garante atomicidade
+            version: item.version,
           },
           data: updateData,
           select: {
@@ -250,7 +226,6 @@ export async function PUT(req: NextRequest, { params }: Params) {
       },
     });
   } catch (error: any) {
-    // Prisma P2025 = record not found (race condition na transação)
     if (error?.code === "P2025") {
       return NextResponse.json(
         {
