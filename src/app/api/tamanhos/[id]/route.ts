@@ -10,25 +10,27 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-interface Params {
-  params: { id: string };
-}
+export async function GET(_req: NextRequest, context: any) {
+  const params = await context.params;
+  const id = params.id;
 
-export async function GET(_req: NextRequest, { params }: Params) {
   try {
-    const tamanho = await prisma.tamanho.findUnique({ where: { id: params.id } });
+    const tamanho = await prisma.tamanho.findUnique({ where: { id } });
 
     if (!tamanho) {
       return NextResponse.json(
         { success: false, error: "Tamanho não encontrado" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     return NextResponse.json({ success: true, data: tamanho });
   } catch (error) {
     console.error("[GET /api/tamanhos/[id]]", error);
-    return NextResponse.json({ success: false, error: "Erro interno" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Erro interno" },
+      { status: 500 },
+    );
   }
 }
 
@@ -39,21 +41,28 @@ const patchSchema = z.object({
   ativo: z.boolean().optional(),
 });
 
-export async function PATCH(req: NextRequest, { params }: Params) {
+export async function PATCH(req: NextRequest, context: any) {
+  const params = await context.params;
+  const id = params.id;
+
   const body = await req.json().catch(() => null);
   const parsed = patchSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json(
-      { success: false, error: "Dados inválidos", details: parsed.error.flatten() },
-      { status: 400 }
+      {
+        success: false,
+        error: "Dados inválidos",
+        details: parsed.error.flatten(),
+      },
+      { status: 400 },
     );
   }
 
   if (Object.keys(parsed.data).length === 0) {
     return NextResponse.json(
       { success: false, error: "Nenhum campo para atualizar" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -65,13 +74,13 @@ export async function PATCH(req: NextRequest, { params }: Params) {
         error:
           "O campo 'grupo' não pode ser alterado via PATCH. Desative este tamanho e crie um novo no grupo correto.",
       },
-      { status: 422 }
+      { status: 422 },
     );
   }
 
   try {
     const tamanho = await prisma.tamanho.update({
-      where: { id: params.id },
+      where: { id },
       data: parsed.data,
     });
     return NextResponse.json({ success: true, data: tamanho });
@@ -79,29 +88,38 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     if (error?.code === "P2025") {
       return NextResponse.json(
         { success: false, error: "Tamanho não encontrado" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     if (error?.code === "P2002") {
       return NextResponse.json(
-        { success: false, error: "Já existe um tamanho com este nome neste grupo" },
-        { status: 409 }
+        {
+          success: false,
+          error: "Já existe um tamanho com este nome neste grupo",
+        },
+        { status: 409 },
       );
     }
     console.error("[PATCH /api/tamanhos/[id]]", error);
-    return NextResponse.json({ success: false, error: "Erro interno" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Erro interno" },
+      { status: 500 },
+    );
   }
 }
 
-export async function DELETE(_req: NextRequest, { params }: Params) {
+export async function DELETE(_req: NextRequest, context: any) {
+  const params = await context.params;
+  const id = params.id;
+
   try {
     const totalVinculados = await prisma.estoquePeriodo.count({
-      where: { tamanhoId: params.id },
+      where: { tamanhoId: id },
     });
 
     if (totalVinculados > 0) {
       const tamanho = await prisma.tamanho.update({
-        where: { id: params.id },
+        where: { id },
         data: { ativo: false },
       });
       return NextResponse.json({
@@ -111,16 +129,23 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
       });
     }
 
-    await prisma.tamanho.delete({ where: { id: params.id } });
-    return NextResponse.json({ success: true, data: null, message: "Tamanho excluído" });
+    await prisma.tamanho.delete({ where: { id } });
+    return NextResponse.json({
+      success: true,
+      data: null,
+      message: "Tamanho excluído",
+    });
   } catch (error: any) {
     if (error?.code === "P2025") {
       return NextResponse.json(
         { success: false, error: "Tamanho não encontrado" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     console.error("[DELETE /api/tamanhos/[id]]", error);
-    return NextResponse.json({ success: false, error: "Erro interno" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Erro interno" },
+      { status: 500 },
+    );
   }
 }

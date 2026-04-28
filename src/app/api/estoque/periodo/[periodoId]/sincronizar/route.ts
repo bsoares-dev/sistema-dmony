@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: Promise<{ periodoId: string }> }, // AVISAMOS QUE É UMA PROMISE
-) {
+export async function POST(req: NextRequest, context: any) {
   try {
-    // ABRINDO A CAIXA COM AWAIT:
-    const { periodoId } = await params;
+    // ABRINDO A CAIXA COM A NOSSA VACINA ANTI-VERCEL:
+    const params = await context.params;
+    const periodoId = params.periodoId;
 
     const periodo = await prisma.periodo.findUnique({
       where: { id: periodoId },
