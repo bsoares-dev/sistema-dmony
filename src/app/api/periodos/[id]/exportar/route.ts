@@ -3,12 +3,12 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }, // <-- A Vercel quer essa Promise aqui
 ) {
   try {
-    const { id } = params;
+    // <-- E quer que a gente espere (await) o ID chegar aqui
+    const { id } = await params;
 
-    // 1. CORREÇÃO: Usando o nome exato do modelo (estoquePeriodo)
     const itensEstoque = await prisma.estoquePeriodo.findMany({
       where: { periodoId: id },
       include: {
@@ -24,7 +24,6 @@ export async function GET(
       });
     }
 
-    // 2. CABEÇALHO: Adaptado para a sua fórmula EI + P - EA = RV
     const cabecalho = [
       "Produto",
       "Cor",
@@ -35,7 +34,6 @@ export async function GET(
       "Resultado Vendas (RV)",
     ];
 
-    // 3. LINHAS: Mapeando os campos reais do seu banco
     const linhas = itensEstoque.map((item: any) => [
       item.produto?.nome || "-",
       item.cor?.nome || "-",
@@ -46,13 +44,11 @@ export async function GET(
       item.rv?.toString() || "0",
     ]);
 
-    // 4. CORREÇÃO TS: Adicionado : any[] para o TypeScript não reclamar do .join
     const conteudoCSV = [
       cabecalho.join(";"),
       ...linhas.map((linha: any[]) => linha.join(";")),
     ].join("\n");
 
-    // 5. RESPOSTA: Força o download  com o nome certo
     return new NextResponse("\uFEFF" + conteudoCSV, {
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
