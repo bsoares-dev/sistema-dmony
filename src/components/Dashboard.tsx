@@ -45,11 +45,14 @@ interface DashboardMetrics {
   };
 }
 
+// 🔥 AQUI: Adicionamos as datas que já vinham do banco de dados!
 interface Periodo {
   id: string;
   nome: string;
   status: "ABERTO" | "FECHADO";
   ordem: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface DashboardProps {
@@ -58,6 +61,16 @@ interface DashboardProps {
 
 function fmt(n: number) {
   return n.toLocaleString("pt-BR");
+}
+
+// 🔥 NOVA FUNÇÃO: Formatar a data no padrão brasileiro (DD/MM/AAAA)
+function formatarData(isoString: string) {
+  if (!isoString) return "";
+  const data = new Date(isoString);
+  // Adiciona o timezone offset para evitar que a data volte 1 dia dependendo do fuso horário
+  const userTimezoneOffset = data.getTimezoneOffset() * 60000;
+  const dataCorrigida = new Date(data.getTime() + userTimezoneOffset);
+  return dataCorrigida.toLocaleDateString("pt-BR");
 }
 
 function MetricCard({
@@ -169,7 +182,6 @@ export default function Dashboard({ userRole }: DashboardProps) {
     }
   }
 
-  // NOVA FUNÇÃO: Botão de Emergência para abrir mês manual
   async function handleCriarNovo() {
     setCriando(true);
     const toastId = toast.loading("Abrindo novo período...");
@@ -230,7 +242,6 @@ export default function Dashboard({ userRole }: DashboardProps) {
   const periodoAtual = periodos.find((p) => p.id === periodoSelecionado);
   const isAberto = periodoAtual?.status === "ABERTO";
 
-  // Verifica se não existe NENHUM período aberto na loja inteira
   const naoTemPeriodoAberto = !periodos.some((p) => p.status === "ABERTO");
 
   return (
@@ -258,11 +269,21 @@ export default function Dashboard({ userRole }: DashboardProps) {
             className="text-base font-bold border-2 border-gray-300 rounded-lg px-4 py-2 text-gray-900 bg-white
                        focus:outline-none focus:ring-2 focus:ring-pink-500"
           >
-            {periodos.map((p) => (
-              <option key={p.id} value={p.id} className="font-bold">
-                {p.nome} {p.status === "ABERTO" ? "▶" : "🔒"}
-              </option>
-            ))}
+            {periodos.map((p) => {
+              // 🔥 AQUI: Montando o texto com as datas dinâmicas
+              const dataAbertura = formatarData(p.createdAt);
+              const dataFechamento =
+                p.status === "FECHADO"
+                  ? ` até ${formatarData(p.updatedAt)}`
+                  : "";
+
+              return (
+                <option key={p.id} value={p.id} className="font-bold">
+                  {p.nome} (De {dataAbertura}
+                  {dataFechamento}) {p.status === "ABERTO" ? "▶" : "🔒"}
+                </option>
+              );
+            })}
           </select>
 
           <button
@@ -273,7 +294,6 @@ export default function Dashboard({ userRole }: DashboardProps) {
             {exporting ? "⏳ Exportando..." : "⬇ Exportar CSV"}
           </button>
 
-          {/* Renderiza o botão de ENCERRAR se estiver aberto */}
           {isGerente && isAberto && (
             <>
               {showConfirmClose ? (
@@ -307,7 +327,6 @@ export default function Dashboard({ userRole }: DashboardProps) {
             </>
           )}
 
-          {/* Renderiza o botão de ABRIR NOVO se estiver tudo fechado */}
           {isGerente && naoTemPeriodoAberto && (
             <button
               onClick={handleCriarNovo}
