@@ -1,4 +1,3 @@
-// src/app/api/estoque/periodo/[periodoId]/cor/[corId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { salvarRascunhoSchema } from "@/lib/validations";
@@ -187,7 +186,8 @@ export async function PUT(req: NextRequest, context: any) {
           version: { increment: 1 },
         };
 
-        if (periodo.isBootstrap && item.ei !== undefined) {
+        // AQUI CAIU A ÚLTIMA TRAVA! Agora aceita o 'ei' independente do isBootstrap
+        if (item.ei !== undefined) {
           updateData.ei = item.ei;
         }
 

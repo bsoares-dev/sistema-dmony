@@ -37,7 +37,6 @@ function parseNum(v: string): number {
   return isNaN(n) || n < 0 ? 0 : n;
 }
 
-// O TypeScript exigia essa correção (Omit) para não dar conflito
 interface TabelaProdutoProps {
   produto: Omit<ProdutoGrade, "items"> & { items: ItemLocal[] };
   isBootstrap: boolean;
@@ -115,26 +114,21 @@ function TabelaProduto({
                     {item.tamanhoNome}
                   </td>
                   <td className="px-3 py-1.5">
-                    {isBootstrap ? (
-                      <input
-                        type="number"
-                        min="0"
-                        step="1"
-                        value={item.ei_local}
-                        disabled={isFechado}
-                        onChange={(e) =>
-                          onChange(item.id, "ei_local", e.target.value)
-                        }
-                        onKeyDown={(e) => onKeyDown(e, item.id, "ei")}
-                        className="grade-input text-gray-900 font-bold bg-white"
-                        data-item={item.id}
-                        data-field="ei"
-                      />
-                    ) : (
-                      <div className="grade-input bg-gray-50 text-gray-900 font-bold">
-                        {item.ei.toLocaleString("pt-BR")}
-                      </div>
-                    )}
+                    {/* AQUI CAIU A PRIMEIRA TRAVA VISUAL! Agora é sempre input. */}
+                    <input
+                      type="number"
+                      min="0"
+                      step="1"
+                      value={item.ei_local}
+                      disabled={isFechado}
+                      onChange={(e) =>
+                        onChange(item.id, "ei_local", e.target.value)
+                      }
+                      onKeyDown={(e) => onKeyDown(e, item.id, "ei")}
+                      className="grade-input border-gray-200 text-gray-900 font-bold bg-white"
+                      data-item={item.id}
+                      data-field="ei"
+                    />
                   </td>
                   <td className="px-3 py-1.5">
                     <input
@@ -302,7 +296,7 @@ export default function GradeEstoque({
           p: parseNum(item.p_local),
           ea: parseNum(item.ea_local),
           version: item.version,
-          ...(isBootstrap ? { ei: parseNum(item.ei_local) } : {}),
+          ei: parseNum(item.ei_local), // <-- AQUI CAIU A SEGUNDA TRAVA! Agora manda o EI sempre.
         })),
       };
 
@@ -351,7 +345,6 @@ export default function GradeEstoque({
     (i) => i.dirty,
   ).length;
 
-  // Correção tipagem TypeScript (cast as ItemLocal[])
   const produtosComLocais =
     gradeData?.produtos.map((produto) => ({
       ...produto,
