@@ -180,9 +180,6 @@ function ProdutosCrud() {
   const [nome, setNome] = useState("");
   const [grupo, setGrupo] = useState<string>("GRUPO_1");
   const [saving, setSaving] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editNome, setEditNome] = useState("");
-  const [editGrupo, setEditGrupo] = useState("");
   const [confirmDelete, setConfirmDelete] = useState<any>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -214,8 +211,6 @@ function ProdutosCrud() {
       });
 
       const d = await res.json();
-      console.log("Resposta API Produtos:", d); // <-- LOG PARA CAÇAR O ERRO
-
       if (res.ok && d.success) {
         setItems((prev) =>
           [...prev, d.data].sort((a, b) => a.nome.localeCompare(b.nome)),
@@ -224,19 +219,33 @@ function ProdutosCrud() {
         toast.success("Produto criado!");
       } else {
         toast.error(d.error || "Erro desconhecido retornado pela API");
-        alert("Erro na API: " + (d.error || "Desconhecido")); // Alerta na tela forçado
       }
     } catch (err: any) {
-      console.error("Erro crítico no fetch:", err);
-      alert(
-        "Falha de conexão com a API de Produtos. Aperte F12 e olhe a aba Console.",
-      );
+      toast.error("Falha de conexão com a API de Produtos.");
     } finally {
       setSaving(false);
     }
   }
 
-  // (Omiti as funções de Edit e Delete para focar no formulário por brevidade, mas o padrão segue o mesmo)
+  async function handleDelete(id: string) {
+    setDeletingId(id);
+    try {
+      const res = await fetch(`/api/produtos/${id}`, { method: "DELETE" });
+      const d = await res.json();
+      if (res.ok && d.success) {
+        // Atualiza a tela filtrando o item apagado
+        setItems((prev) => prev.filter((item) => item.id !== id));
+        toast.success(d.message || "Produto inativado!");
+      } else {
+        toast.error(d.error || "Erro ao excluir produto");
+      }
+    } catch (err) {
+      toast.error("Falha ao excluir produto.");
+    } finally {
+      setDeletingId(null);
+      setConfirmDelete(null);
+    }
+  }
 
   return (
     <div className="space-y-5">
@@ -265,7 +274,7 @@ function ProdutosCrud() {
           <button
             onClick={handleCreate}
             disabled={saving}
-            className="btn-primary"
+            className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
           >
             {saving ? "Salvando..." : "+ Adicionar"}
           </button>
@@ -275,7 +284,7 @@ function ProdutosCrud() {
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <div className="px-5 py-3 border-b border-gray-100 bg-gray-50">
           <span className="text-sm font-semibold text-gray-600">
-            {items.filter((i) => i.ativo).length} ativo(s)
+            {items.filter((i) => i.ativo !== false).length} ativo(s)
           </span>
         </div>
         {loading ? (
@@ -284,20 +293,42 @@ function ProdutosCrud() {
           </div>
         ) : (
           <div className="divide-y divide-gray-50">
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className="px-5 py-3 flex items-center gap-3 text-gray-900"
-              >
-                {item.nome} -{" "}
-                <span className="text-xs bg-gray-200 px-2 rounded">
-                  {item.grupoGrade}
-                </span>
-              </div>
-            ))}
+            {items
+              .filter((i) => i.ativo !== false)
+              .map((item) => (
+                <div
+                  key={item.id}
+                  className="px-5 py-3 flex items-center justify-between text-gray-900"
+                >
+                  <div>
+                    {item.nome} -{" "}
+                    <span className="text-xs bg-gray-200 px-2 rounded">
+                      {item.grupoGrade}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() =>
+                      setConfirmDelete({ id: item.id, nome: item.nome })
+                    }
+                    className="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors"
+                    title="Inativar Produto"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              ))}
           </div>
         )}
       </div>
+
+      {confirmDelete && (
+        <ConfirmDeleteModal
+          nome={confirmDelete.nome}
+          deleting={deletingId === confirmDelete.id}
+          onConfirm={() => handleDelete(confirmDelete.id)}
+          onCancel={() => setConfirmDelete(null)}
+        />
+      )}
     </div>
   );
 }
@@ -311,6 +342,8 @@ function CoresCrud() {
   const [loading, setLoading] = useState(true);
   const [nome, setNome] = useState("");
   const [saving, setSaving] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<any>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/cores")
@@ -334,11 +367,31 @@ function CoresCrud() {
       if (res.ok && d.success) {
         setItems((prev) => [...prev, d.data]);
         setNome("");
-      } else alert("Erro na API: " + d.error);
+        toast.success("Cor adicionada!");
+      } else toast.error("Erro na API: " + d.error);
     } catch (err) {
-      alert("Falha de conexão.");
+      toast.error("Falha de conexão.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    setDeletingId(id);
+    try {
+      const res = await fetch(`/api/cores/${id}`, { method: "DELETE" });
+      const d = await res.json();
+      if (res.ok && d.success) {
+        setItems((prev) => prev.filter((item) => item.id !== id));
+        toast.success(d.message || "Cor inativada!");
+      } else {
+        toast.error(d.error || "Erro ao excluir cor");
+      }
+    } catch (err) {
+      toast.error("Falha ao excluir cor.");
+    } finally {
+      setDeletingId(null);
+      setConfirmDelete(null);
     }
   }
 
@@ -358,12 +411,56 @@ function CoresCrud() {
           <button
             onClick={handleCreate}
             disabled={saving}
-            className="btn-primary"
+            className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
           >
             {saving ? "Salvando..." : "+ Adicionar"}
           </button>
         </div>
       </div>
+
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+        <div className="px-5 py-3 border-b border-gray-100 bg-gray-50">
+          <span className="text-sm font-semibold text-gray-600">
+            {items.filter((i) => i.ativo !== false).length} ativa(s)
+          </span>
+        </div>
+        {loading ? (
+          <div className="p-8 text-center text-gray-400 text-sm">
+            Carregando...
+          </div>
+        ) : (
+          <div className="divide-y divide-gray-50">
+            {items
+              .filter((i) => i.ativo !== false)
+              .map((item) => (
+                <div
+                  key={item.id}
+                  className="px-5 py-3 flex items-center justify-between text-gray-900"
+                >
+                  <span className="font-medium">{item.nome}</span>
+                  <button
+                    onClick={() =>
+                      setConfirmDelete({ id: item.id, nome: item.nome })
+                    }
+                    className="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors"
+                    title="Inativar Cor"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
+
+      {confirmDelete && (
+        <ConfirmDeleteModal
+          nome={confirmDelete.nome}
+          deleting={deletingId === confirmDelete.id}
+          onConfirm={() => handleDelete(confirmDelete.id)}
+          onCancel={() => setConfirmDelete(null)}
+        />
+      )}
     </div>
   );
 }
@@ -391,9 +488,9 @@ function TamanhosCrud() {
       if (res.ok && d.success) {
         setItems((prev) => [...prev, d.data]);
         setNome("");
-      } else alert("Erro na API: " + d.error);
+      } else toast.error("Erro na API: " + d.error);
     } catch (err) {
-      alert("Falha de conexão.");
+      toast.error("Falha de conexão.");
     } finally {
       setSaving(false);
     }
@@ -425,7 +522,7 @@ function TamanhosCrud() {
           <button
             onClick={handleCreate}
             disabled={saving}
-            className="btn-primary"
+            className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
           >
             + Adicionar
           </button>

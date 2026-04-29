@@ -102,45 +102,24 @@ export async function PATCH(req: NextRequest, context: any) {
 // Apenas marca ativo = false.
 
 export async function DELETE(req: NextRequest, context: any) {
-  const params = await context.params;
-  const id = params.id;
-
   try {
-    // Verifica se há registros de estoque vinculados
-    const totalVinculados = await prisma.estoquePeriodo.count({
-      where: { produtoId: id },
+    const params = await context.params;
+    const { id } = params;
+
+    // Em vez de deletar de verdade, a gente inativa o produto (Soft Delete)
+    await prisma.produto.update({
+      where: { id },
+      data: { ativo: false },
     });
 
-    if (totalVinculados > 0) {
-      // Soft delete — preserva histórico
-      const produto = await prisma.produto.update({
-        where: { id },
-        data: { ativo: false },
-      });
-      return NextResponse.json({
-        success: true,
-        data: produto,
-        message: `Produto desativado (${totalVinculados} registro(s) histórico(s) preservado(s))`,
-      });
-    }
-
-    // Sem histórico: pode deletar fisicamente
-    await prisma.produto.delete({ where: { id } });
     return NextResponse.json({
       success: true,
-      data: null,
-      message: "Produto excluído",
+      message: "Produto inativado com sucesso!",
     });
   } catch (error: any) {
-    if (error?.code === "P2025") {
-      return NextResponse.json(
-        { success: false, error: "Produto não encontrado" },
-        { status: 404 },
-      );
-    }
-    console.error("[DELETE /api/produtos/[id]]", error);
+    console.error("Erro ao inativar produto:", error);
     return NextResponse.json(
-      { success: false, error: "Erro interno" },
+      { success: false, error: "Erro ao inativar produto." },
       { status: 500 },
     );
   }

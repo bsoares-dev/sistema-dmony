@@ -89,43 +89,25 @@ export async function PATCH(req: NextRequest, context: any) {
   }
 }
 
-export async function DELETE(_req: NextRequest, context: any) {
-  const params = await context.params;
-  const id = params.id;
-
+export async function DELETE(req: NextRequest, context: any) {
   try {
-    const totalVinculados = await prisma.estoquePeriodo.count({
-      where: { corId: id },
+    const params = await context.params;
+    const { id } = params;
+
+    // Em vez de deletar de verdade, a gente inativa a cor (Soft Delete)
+    await prisma.cor.update({
+      where: { id },
+      data: { ativo: false },
     });
 
-    if (totalVinculados > 0) {
-      const cor = await prisma.cor.update({
-        where: { id },
-        data: { ativo: false },
-      });
-      return NextResponse.json({
-        success: true,
-        data: cor,
-        message: `Cor desativada (${totalVinculados} registro(s) histórico(s) preservado(s))`,
-      });
-    }
-
-    await prisma.cor.delete({ where: { id } });
     return NextResponse.json({
       success: true,
-      data: null,
-      message: "Cor excluída",
+      message: "Cor inativada com sucesso!",
     });
   } catch (error: any) {
-    if (error?.code === "P2025") {
-      return NextResponse.json(
-        { success: false, error: "Cor não encontrada" },
-        { status: 404 },
-      );
-    }
-    console.error("[DELETE /api/cores/[id]]", error);
+    console.error("Erro ao inativar cor:", error);
     return NextResponse.json(
-      { success: false, error: "Erro interno" },
+      { success: false, error: "Erro ao inativar cor." },
       { status: 500 },
     );
   }
