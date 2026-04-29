@@ -52,7 +52,7 @@ export async function GET(
       ...linhas.map((linha: any[]) => linha.join(";")),
     ].join("\n");
 
-    // 5. RESPOSTA: Força o download com o nome certo
+    // 5. RESPOSTA: Força o download  com o nome certo
     return new NextResponse("\uFEFF" + conteudoCSV, {
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
