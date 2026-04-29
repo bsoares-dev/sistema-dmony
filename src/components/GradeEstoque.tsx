@@ -114,7 +114,6 @@ function TabelaProduto({
                     {item.tamanhoNome}
                   </td>
                   <td className="px-3 py-1.5">
-                    {/* AQUI CAIU A PRIMEIRA TRAVA VISUAL! Agora é sempre input. */}
                     <input
                       type="number"
                       min="0"
@@ -202,8 +201,16 @@ export default function GradeEstoque({
       .then((r) => r.json())
       .then((data) => {
         if (data.success) {
-          setCores(data.data);
-          if (data.data.length > 0) setCorAtiva(data.data[0].id);
+          // 🔥 FILTRO MÁGICO: Esconde as cores que foram inativadas
+          const coresAtivas = data.data.filter(
+            (cor: Cor) => cor.ativo !== false,
+          );
+
+          setCores(coresAtivas);
+
+          if (coresAtivas.length > 0) {
+            setCorAtiva(coresAtivas[0].id);
+          }
         }
       })
       .catch(() => toast.error("Erro ao carregar cores"))
@@ -296,7 +303,7 @@ export default function GradeEstoque({
           p: parseNum(item.p_local),
           ea: parseNum(item.ea_local),
           version: item.version,
-          ei: parseNum(item.ei_local), // <-- AQUI CAIU A SEGUNDA TRAVA! Agora manda o EI sempre.
+          ei: parseNum(item.ei_local),
         })),
       };
 
