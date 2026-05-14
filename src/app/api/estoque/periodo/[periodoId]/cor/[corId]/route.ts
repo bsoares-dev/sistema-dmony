@@ -1,3 +1,4 @@
+// src/app/api/estoque/periodo/[periodoId]/cor/[corId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { salvarRascunhoSchema } from "@/lib/validations";
@@ -12,7 +13,12 @@ export async function GET(_req: NextRequest, context: any) {
       prisma.periodo.findUnique({ where: { id: periodoId } }),
       prisma.cor.findUnique({ where: { id: corId } }),
       prisma.estoquePeriodo.findMany({
-        where: { periodoId, corId },
+        where: {
+          periodoId,
+          corId,
+          // 🔥 FILTRO MÁGICO: Só traz produtos que estão marcados como ativos
+          produto: { ativo: true },
+        },
         include: {
           produto: { select: { id: true, nome: true, grupoGrade: true } },
           tamanho: { select: { id: true, nome: true, ordem: true } },
@@ -186,7 +192,7 @@ export async function PUT(req: NextRequest, context: any) {
           version: { increment: 1 },
         };
 
-        // AQUI CAIU A ÚLTIMA TRAVA! Agora aceita o 'ei' independente do isBootstrap
+        // Aceita o 'ei' se for enviado
         if (item.ei !== undefined) {
           updateData.ei = item.ei;
         }
